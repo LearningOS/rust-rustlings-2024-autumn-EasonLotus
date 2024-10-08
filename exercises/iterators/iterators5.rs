@@ -11,7 +11,12 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// 这题一点不会，看了答案也不会，先放着吧
+//就是用迭代器实现for循环的功能，不过这个题目的描述有点问题，不是很好理解
+//flat_map(|map| map.values())：
+//filter(|&&v| v == value)：
+//flat_map: 会把map.values()的结果展开，然后再filter
+//filter: 过滤出符合条件的值
 
 use std::collections::HashMap;
 
@@ -35,7 +40,7 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    map.values().filter(|&&v| v == value).count()
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -54,7 +59,10 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    collection.iter()
+        .flat_map(|map| map.values())
+        .filter(|&&v| v == value)
+        .count()
 }
 
 #[cfg(test)]
