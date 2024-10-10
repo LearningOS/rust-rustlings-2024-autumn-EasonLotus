@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -34,6 +34,7 @@ impl<T> Default for LinkedList<T> {
         Self::new()
     }
 }
+
 
 impl<T> LinkedList<T> {
     pub fn new() -> Self {
@@ -69,14 +70,46 @@ impl<T> LinkedList<T> {
             },
         }
     }
+}
+impl<T:PartialOrd+Clone> LinkedList<T> {
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
 		//TODO
+        let mut result = LinkedList::new();
+
+        let mut ptr_a = list_a.start;
+        let mut ptr_b = list_b.start;
+        while let (Some(a),Some(b))=(ptr_a,ptr_b){
+            unsafe{
+                if (*a.as_ptr()).val <= (*b.as_ptr()).val {
+                    result.add((*a.as_ptr()).val.clone());
+                    ptr_a = (*a.as_ptr()).next;
+                }else{
+                    result.add((*b.as_ptr()).val.clone());
+                    ptr_b=(*b.as_ptr()).next;
+                }
+            }
+        }
+        while let Some(a) = ptr_a {
+            unsafe {
+                result.add((*a.as_ptr()).val.clone());
+                ptr_a = (*a.as_ptr()).next;
+            }
+        }
+
+        while let Some(b) = ptr_b {
+            unsafe {
+                result.add((*b.as_ptr()).val.clone());
+                ptr_b = (*b.as_ptr()).next;
+            }
+        }
 		Self {
             length: 0,
             start: None,
             end: None,
-        }
+        };
+
+        result
 	}
 }
 
